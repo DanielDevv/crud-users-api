@@ -30,8 +30,6 @@ class UserControllerUnitTest {
     @MockkBean
     lateinit var userServiceMock: UserService
 
-    private val url = "/v1/users"
-
     @Test
     fun `shouldCreateUser`() {
         val userDTO = UserDTO(null, "Dan", "Daniel", LocalDateTime.now(), mutableSetOf("NodeJS", "ExpressJS"))
