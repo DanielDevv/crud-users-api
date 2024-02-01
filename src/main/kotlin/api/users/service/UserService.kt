@@ -56,17 +56,6 @@ class UserService(val userRepository: UserRepository) {
 
             UserDTO(it.id, it.nickname, it.name, it.birth_date, it.stack)
             }
-
-//        return userExists.get().let {
-//            it.nickname = user.nickname
-//            it.name = user.name
-//            it.birth_date = user.birth_date
-//            it.stack = user.stack
-//            userRepository.save(it)
-//
-//            UserDTO(it.id, it.nickname, it.name, it.birth_date, it.stack)
-//        }
-//    }
     }
 
     fun deleteUser(userId: java.util.UUID) {

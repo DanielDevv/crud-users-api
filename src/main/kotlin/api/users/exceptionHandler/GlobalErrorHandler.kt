@@ -24,24 +24,6 @@ class GlobalErrorHandler {
         private val log: Logger = LoggerFactory.getLogger(GlobalErrorHandler::class.java)
     }
 
-//    fun handleMethodArgumentNotValid(
-//        ex: MethodArgumentNotValidException,
-//        headers: HttpHeaders,
-//        status: HttpStatusCode,
-//        request: WebRequest
-//    ): ResponseEntity<Any>? {
-//
-//        log.error("MethodArgumentNotValidException observed : ${ex.message}", ex)
-//        val errors = ex.bindingResult.allErrors
-//            .map { error -> error.defaultMessage!! }
-//            .sorted()
-//
-//        log.info("errors : $errors")
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//            .body(errors)
-//    }
-
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun methodArguentNotValidException(
         req: HttpServletRequest,
@@ -56,9 +38,8 @@ class GlobalErrorHandler {
         log.info("errors : $errors")
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(errors)
+            .body(errors.joinToString(", ") { it })
     }
-
 
     @ExceptionHandler(UserNotFoundException::class)
     fun handleNotFoundException(ex: UserNotFoundException, request: WebRequest) : ResponseEntity<Any> {

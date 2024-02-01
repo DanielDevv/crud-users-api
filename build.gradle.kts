@@ -53,13 +53,8 @@ tasks.withType<Test> {
 
 sourceSets {
 	test {
-
 		java {
 			setSrcDirs(listOf("src/test/intg", "src/test/unit"))
 		}
-
-//		withConvention(KotlinSourceSet::class) {
-//			kotlin.setSrcDirs(listOf("src/test/intg", "src/test/unit"))
-//		}
 	}
 }
