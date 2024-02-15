@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -20,6 +20,10 @@ data class User(
     @Column(nullable = false)
     var birth_date: LocalDateTime,
 
-    @MaxCharacters
-    var stack: MutableSet<String>?
+    @OneToMany(
+        mappedBy = "user",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
+    )
+    var stack: List<Stack>? = mutableListOf() // tirar opcional
 )

@@ -1,5 +1,6 @@
 package api.users.exceptionHandler
 
+import api.users.exception.StackNameDuplicatedException
 import api.users.exception.UserNotFoundException
 import jakarta.servlet.http.HttpServletRequest
 import mu.KLogging
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.stereotype.Component
+import org.springframework.validation.ObjectError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -38,7 +40,7 @@ class GlobalErrorHandler {
         log.info("errors : $errors")
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(errors.joinToString(", ") { it })
+            .body(ResponseError(errors.formatErrorMessage()))
     }
 
     @ExceptionHandler(UserNotFoundException::class)
@@ -46,8 +48,15 @@ class GlobalErrorHandler {
         log.error("Exception observed : ${ex.message}", ex)
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ex.message)
+                .body(ResponseError(mapOf("code" to "user_not_found", "description" to ex.message)))
+    }
 
+    @ExceptionHandler(StackNameDuplicatedException::class)
+    fun handleStackNameDuplicatedException(ex: StackNameDuplicatedException, request: WebRequest) : ResponseEntity<Any> {
+        log.error("Exception observed : ${ex.message}", ex)
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ResponseError(mapOf("code" to "stack_name_repeated", "description" to ex.message)))
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
@@ -55,7 +64,7 @@ class GlobalErrorHandler {
         log.error("Exception observed : ${ex.message}", ex)
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(ex.message)
+            .body(ResponseError(mapOf("data_not_valid" to "user_not_found", "description" to ex.message)))
 
     }
 
@@ -64,7 +73,18 @@ class GlobalErrorHandler {
         log.error("Exception observed : ${ex.message}", ex)
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(ex.message)
-
+            .body(ResponseError(mapOf("server_error" to "user_not_found", "description" to ex.message)))
     }
+}
+
+fun List<String>.formatErrorMessage(): MutableList<Map<String, String>> {
+    val err = this.map {
+        mapOf("code" to "argument_not_valid", "description" to it )
+    }.toMutableList()
+
+    val errorList: MutableList<Map<String, String>> = mutableListOf()
+
+    errorList.addAll(err)
+
+    return errorList
 }

@@ -1,9 +1,13 @@
 package api.users.controller
 
+import api.users.dto.PageDTO
+import api.users.dto.StackDTO
 import api.users.dto.UserDTO
 import api.users.service.UserService
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -28,7 +33,7 @@ class UserController(val userService: UserService) {
     }
 
     @GetMapping
-    fun getAllUsers(): List<UserDTO> = userService.getAllUsers()
+    fun getAllUsers(@RequestParam(defaultValue = "0") page: Int, @RequestParam(defaultValue = "15") size: Int): ResponseEntity<PageDTO> = userService.getAllUsers(page, size)
 
     @GetMapping("/{user_id}")
     fun getUser(@PathVariable("user_id") userId: UUID): UserDTO = userService.getUser(userId)
@@ -39,4 +44,7 @@ class UserController(val userService: UserService) {
     @DeleteMapping("/{user_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteUser(@PathVariable("user_id") userId: UUID) = userService.deleteUser(userId)
+
+    @GetMapping("/{user_id}/stacks")
+    fun getAllStackByUser(@PathVariable("user_id") userId: UUID): List<StackDTO> = userService.getStacks(userId)
 }
