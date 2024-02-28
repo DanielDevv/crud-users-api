@@ -29,12 +29,10 @@ dependencies {
 	//logging
 	implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
 
-	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 //	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.oracle.database.jdbc:ojdbc11")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 
 	testImplementation("io.mockk:mockk:1.10.4")
 	testImplementation("com.ninja-squad:springmockk:3.0.1")

@@ -1,6 +1,5 @@
 package api.users.entity
 
-import api.users.validator.MaxCharacters
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*
@@ -12,18 +11,25 @@ data class User(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID?,
 
+    @Column(length = 32)
     var nickname: String?,
 
-    @Column(unique = true, length = 32, nullable = false)
+    @Column(unique = true, nullable = false)
     var name: String,
 
     @Column(nullable = false)
-    var birth_date: LocalDateTime,
+    var birthDate: LocalDateTime,
 
     @OneToMany(
         mappedBy = "user",
         cascade = [CascadeType.ALL],
         orphanRemoval = true
     )
-    var stack: List<Stack>? = mutableListOf() // tirar opcional
-)
+    var stack: Set<Stack> = setOf()
+) {
+    override fun hashCode(): Int {
+        if (id != null) return id.hashCode()
+
+        return super.hashCode()
+    }
+}

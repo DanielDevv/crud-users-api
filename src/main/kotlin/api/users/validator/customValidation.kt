@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [MaxCaractersValid::class])
 @MustBeDocumented
-annotation class MaxCharacters (
+annotation class MaxCharacters(
     val message: String = "stack field not valid",
     val groups: Array<KClass<Any>> = [],
     val payload: Array<KClass<Payload>> = []
