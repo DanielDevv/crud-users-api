@@ -77,9 +77,7 @@ class UserService(val userRepository: UserRepository, val stackRepository: Stack
 
             userRepository.save(userEntity)
 
-            userEntity.stack.let {
-                stackRepository.saveAll(it)
-            }
+            stackRepository.saveAll(stack)
 
             UserDTO(userId, it.nickname, it.name, it.birthDate, user.stack)
         }

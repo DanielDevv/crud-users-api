@@ -30,7 +30,6 @@ dependencies {
 	implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
 
 
-//	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.oracle.database.jdbc:ojdbc11")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 

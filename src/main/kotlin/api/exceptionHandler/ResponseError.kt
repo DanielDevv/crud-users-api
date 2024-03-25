@@ -1,4 +1,4 @@
-package api.users.exceptionHandler
+package api.exceptionHandler
 
 
 data class ResponseError<T>(

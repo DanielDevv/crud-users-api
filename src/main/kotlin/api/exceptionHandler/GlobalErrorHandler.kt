@@ -1,5 +1,6 @@
-package api.users.exceptionHandler
+package api.exceptionHandler
 
+import api.jobs.Exception.JobNotFoundException
 import api.users.exception.UserNotFoundException
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.Logger
@@ -17,7 +18,7 @@ class GlobalErrorHandler {
     companion object {
         private val log: Logger = LoggerFactory.getLogger(GlobalErrorHandler::class.java)
     }
-
+    // arrumar os any do retorno
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun methodArguentNotValidException(
         req: HttpServletRequest,
@@ -41,6 +42,14 @@ class GlobalErrorHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(ResponseError(mapOf("code" to "user_not_found", "description" to ex.message)))
+    }
+
+    @ExceptionHandler(JobNotFoundException::class)
+    fun handleNotFoundException(ex: JobNotFoundException, request: WebRequest): ResponseEntity<Any> {
+        log.error("Exception observed : ${ex.message}", ex)
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ResponseError(mapOf("code" to "job_not_found", "description" to ex.message)))
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)

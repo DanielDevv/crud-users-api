@@ -1,12 +1,10 @@
-package api.users.repository
+package api.jobs.repository
 
-import api.users.entity.User
+import api.jobs.entity.Job
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
-interface UserRepository : JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
-
-}
+interface JobRepository : JpaRepository<Job, UUID>

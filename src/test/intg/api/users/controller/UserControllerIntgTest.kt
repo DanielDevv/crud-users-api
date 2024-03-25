@@ -51,7 +51,6 @@ class UserControllerIntgTest {
             val userDTO = UserDTO(null, "Dan", "David", LocalDateTime.now(), setOf(StackDTO("Kotlin", 20)))
 
             val savedUserDTO = testRestTemplate.postForObject(url, userDTO, UserDTO::class.java)
-
             Assertions.assertTrue { savedUserDTO.id != null }
             Assertions.assertEquals(savedUserDTO::class, UserDTO::class)
             Assertions.assertEquals(savedUserDTO.name, userDTO.name)
@@ -92,6 +91,10 @@ class UserControllerIntgTest {
             Assertions.assertEquals(0 ,userDTOs.body?.data?.page)
         }
    }
+
+    // teste status code
+
+    // ordenação paginação
 
     @Nested
     inner class Update {
@@ -194,5 +197,4 @@ class UserControllerIntgTest {
         }
 
     }
-
 }
